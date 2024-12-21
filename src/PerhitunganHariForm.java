@@ -1,3 +1,9 @@
+
+import java.time.LocalDate;
+import java.time.format.TextStyle;
+import java.util.Locale;
+import javax.swing.JOptionPane;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
@@ -71,6 +77,11 @@ public class PerhitunganHariForm extends javax.swing.JFrame {
         comboBulan.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember" }));
 
         buttonHitung.setText("Hitung");
+        buttonHitung.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonHitungActionPerformed(evt);
+            }
+        });
 
         textInfoHari.setColumns(20);
         textInfoHari.setRows(5);
@@ -151,6 +162,29 @@ public class PerhitunganHariForm extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void buttonHitungActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonHitungActionPerformed
+        // TODO add your handling code here:
+        try {
+        // Ambil bulan dan tahun dari input
+        int bulan = comboBulan.getSelectedIndex() + 1; // ComboBox index dimulai dari 0
+        int tahun = (int) spinnerTahun.getValue();
+
+        // Hitung jumlah hari dalam bulan
+        LocalDate date = LocalDate.of(tahun, bulan, 1);
+        int jumlahHari = date.lengthOfMonth();
+
+        // Informasi tambahan: hari pertama dan terakhir
+        String hariPertama = date.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault());
+        String hariTerakhir = date.plusDays(jumlahHari - 1).getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault());
+
+        // Tampilkan hasil
+        labelHasil.setText("Jumlah Hari: " + jumlahHari);
+        textInfoHari.setText("Hari pertama: " + hariPertama + "\nHari terakhir: " + hariTerakhir);
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Input tidak valid!", "Error", JOptionPane.ERROR_MESSAGE);
+    }
+    }//GEN-LAST:event_buttonHitungActionPerformed
 
     /**
      * @param args the command line arguments
